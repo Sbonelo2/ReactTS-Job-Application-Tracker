@@ -1,0 +1,21 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: system-ui;
+}
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+html{
+  font-size: 75%;
+
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
