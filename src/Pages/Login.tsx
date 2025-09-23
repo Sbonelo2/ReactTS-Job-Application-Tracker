@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import avatarImg from "../assets/LOL.png"; // adjust path to your image
+import avatarImg from "../assets/LOL.png";
 
 export default function Login() {
   const [showModal, setShowModal] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // close on background click
+  
   const handleOutsideClick = (e) => {
     if (e.target.id === "loginModal") {
       setShowModal(false);
     }
   };
 
-  // close on Escape key
+  
   useEffect(() => {
     const onEsc = (e) => {
       if (e.key === "Escape") setShowModal(false);
@@ -26,9 +26,9 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // do login logic here
+   
     console.log("Logging in:", { username, password });
-    // optionally close modal
+    
     setShowModal(false);
   };
 
@@ -72,7 +72,7 @@ export default function Login() {
               >
                 &times;
               </span>
-              <img src={avatarImg} alt="Avatar" className="avatar" />
+              <img src={avatarImg} alt="Avatar " className="avatar" />
             </div>
 
             <div className="container">
@@ -104,7 +104,7 @@ export default function Login() {
 
               <button type="submit">Login</button>
               <label>
-                <input type="checkbox" defaultChecked name="remember" />{" "}
+                <input type="checkbox" defaultChecked name="remember" />{"😊"}
                 Remember me
               </label>
             </div>
@@ -120,11 +120,12 @@ export default function Login() {
                 style={{
                   backgroundColor: "#f44336",
                   color: "#fff",
-                  borderStyle: "double",
-                  // border: "double",
+                  borderStyle: "solid",
+                  border: "double",
                   padding: "0.5rem 1rem",
                   borderRadius: "4px",
                   cursor: "pointer",
+                  marginTop: "3%"
                 }}
               >
                 Cancel
