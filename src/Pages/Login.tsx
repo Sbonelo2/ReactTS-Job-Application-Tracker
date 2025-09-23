@@ -1,37 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import avatarImg from "../assets/LOL.png"; // adjust path to your image
 
 export default function Login() {
   const [showModal, setShowModal] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  // close modal if clicked outside content
+  // close on background click
   const handleOutsideClick = (e) => {
-    if (e.target.id === "id01") {
+    if (e.target.id === "loginModal") {
       setShowModal(false);
     }
   };
 
+  // close on Escape key
+  useEffect(() => {
+    const onEsc = (e) => {
+      if (e.key === "Escape") setShowModal(false);
+    };
+    if (showModal) {
+      window.addEventListener("keydown", onEsc);
+    }
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [showModal]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // do login logic here
+    console.log("Logging in:", { username, password });
+    // optionally close modal
+    setShowModal(false);
+  };
+
   return (
     <div>
-      <button onClick={() => setShowModal(true)} style={{ width: "auto" }}>
+      <button
+        onClick={() => setShowModal(true)}
+        style={{
+          width: "auto",
+          padding: "0.5rem 1rem",
+          backgroundColor: "#4CAF50",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+      >
         Login
       </button>
 
       {showModal && (
-        <div id="id01" className="modal" onClick={handleOutsideClick}>
+        <div
+          id="loginModal"
+          className="modal"
+          onClick={handleOutsideClick}
+          style={{ display: "block" }}
+          aria-modal="true"
+          role="dialog"
+        >
           <form
             className="modal-content animate"
-            action="/action_page.php"
-            method="post"
+            onSubmit={handleSubmit}
+            style={{ maxWidth: "400px", margin: "auto" }}
           >
             <div className="imgcontainer">
               <span
                 onClick={() => setShowModal(false)}
                 className="close"
                 title="Close Modal"
+                style={{ cursor: "pointer", fontSize: "2rem" }}
               >
                 &times;
               </span>
-              <img src="img_avatar2.png" alt="Avatar" className="avatar" />
+              <img src={avatarImg} alt="Avatar" className="avatar" />
             </div>
 
             <div className="container">
@@ -39,9 +80,12 @@ export default function Login() {
                 <b>Username</b>
               </label>
               <input
+                id="uname"
                 type="text"
                 placeholder="Enter Username"
                 name="uname"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
 
@@ -49,9 +93,12 @@ export default function Login() {
                 <b>Password</b>
               </label>
               <input
+                id="psw"
                 type="password"
                 placeholder="Enter Password"
                 name="psw"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
 
@@ -62,15 +109,27 @@ export default function Login() {
               </label>
             </div>
 
-            <div className="container" style={{ backgroundColor: "#f1f1f1" }}>
+            <div
+              className="container"
+              style={{ backgroundColor: "#f2fafaff", textAlign: "right" }}
+            >
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
                 className="cancelbtn"
+                style={{
+                  backgroundColor: "#f44336",
+                  color: "#fff",
+                  borderStyle: "double",
+                  // border: "double",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
               >
                 Cancel
               </button>
-              <span className="psw">
+              <span className="psw" style={{ marginLeft: "1rem" }}>
                 Forgot <a href="#">password?</a>
               </span>
             </div>
