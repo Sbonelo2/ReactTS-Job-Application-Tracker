@@ -14,7 +14,7 @@ export default function Navbar() {
         // flexWrap: "wrap",
       }}>
       <a href="#home">Home</a>
-      <a href="#Landing">Landing</a>
+      {/* <a href="#Landing">Landing</a> */}
       <a href="#Jobs">Jobs</a>
       <a href="#Page404">Page404</a>
       <a href="#Registration">Registration</a>

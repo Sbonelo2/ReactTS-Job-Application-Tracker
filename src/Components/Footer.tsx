@@ -8,7 +8,7 @@ export default function Footer() {
         color: "white",
         textAlign: "center",
         padding: "1rem",
-              marginTop: "60rem",
+              marginTop: "56.5rem",
         
       }}
     >
