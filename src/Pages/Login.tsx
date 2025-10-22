@@ -1,142 +1,178 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import avatarImg from "../assets/LOL.png";
+import "./Login.css";
+
+interface LoginFormData {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
+interface ValidationErrors {
+  email?: string;
+  password?: string;
+  general?: string;
+}
 
 export default function Login() {
-  const [showModal, setShowModal] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  
-  const handleOutsideClick = (e) => {
-    if (e.target.id === "loginModal") {
-      setShowModal(false);
+  // Load remembered email if exists
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    if (rememberedEmail) {
+      setFormData((prev) => ({
+        ...prev,
+        email: rememberedEmail,
+        rememberMe: true,
+      }));
     }
+  }, []);
+
+  const validateForm = (): boolean => {
+    const newErrors: ValidationErrors = {};
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  
-  useEffect(() => {
-    const onEsc = (e) => {
-      if (e.key === "Escape") setShowModal(false);
-    };
-    if (showModal) {
-      window.addEventListener("keydown", onEsc);
-    }
-    return () => window.removeEventListener("keydown", onEsc);
-  }, [showModal]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-   
-    console.log("Logging in:", { username, password });
-    
-    setShowModal(false);
+
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      // Get users from localStorage
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const user = users.find((u: any) => u.email === formData.email);
+
+      if (!user || user.password !== formData.password) {
+        throw new Error("Invalid email or password");
+      }
+
+      // Handle "Remember me"
+      if (formData.rememberMe) {
+        localStorage.setItem("rememberedEmail", formData.email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
+
+      // Set user session
+      sessionStorage.setItem(
+        "currentUser",
+        JSON.stringify({
+          email: user.email,
+          name: user.name,
+        })
+      );
+
+      // Navigate to jobs page after successful login
+      navigate("/jobs");
+    } catch (error) {
+      setErrors({
+        general:
+          error instanceof Error
+            ? error.message
+            : "An error occurred during login",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div>
-      <button
-        onClick={() => setShowModal(true)}
-        style={{
-          width: "auto",
-          padding: "0.5rem 1rem",
-          backgroundColor: "#4CAF50",
-          color: "#fff",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
-      >
-        Login
-      </button>
-
-      {showModal && (
-        <div
-          id="loginModal"
-          className="modal"
-          onClick={handleOutsideClick}
-          style={{ display: "block" }}
-          aria-modal="true"
-          role="dialog"
-        >
-          <form
-            className="modal-content animate"
-            onSubmit={handleSubmit}
-            style={{ maxWidth: "400px", margin: "auto" }}
-          >
-            <div className="imgcontainer">
-              <span
-                onClick={() => setShowModal(false)}
-                className="close"
-                title="Close Modal"
-                style={{ cursor: "pointer", fontSize: "2rem" }}
-              >
-                &times;
-              </span>
-              <img src={avatarImg} alt="Avatar " className="avatar" />
-            </div>
-
-            <div className="container">
-              <label htmlFor="uname">
-                <b>Username</b>
-              </label>
-              <input
-                id="uname"
-                type="text"
-                placeholder="Enter Username"
-                name="uname"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-
-              <label htmlFor="psw">
-                <b>Password</b>
-              </label>
-              <input
-                id="psw"
-                type="password"
-                placeholder="Enter Password"
-                name="psw"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-
-              <button type="submit">Login</button>
-              <label>
-                <input type="checkbox" defaultChecked name="remember" />{"😊"}
-                Remember me
-              </label>
-            </div>
-
-            <div
-              className="container"
-              style={{ backgroundColor: "#f2fafaff", textAlign: "right" }}
-            >
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-                className="cancelbtn"
-                style={{
-                  backgroundColor: "#f44336",
-                  color: "#fff",
-                  borderStyle: "solid",
-                  border: "double",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  marginTop: "3%"
-                }}
-              >
-                Cancel
-              </button>
-              <span className="psw" style={{ marginLeft: "1rem" }}>
-                Forgot <a href="#">password?</a>
-              </span>
-            </div>
-          </form>
+    <div className="login-page">
+      <div className="login-container">
+        <div className="login-header">
+          <img src={avatarImg} alt="Avatar" className="avatar" />
+          <h1>Welcome Back!</h1>
+          {errors.general && (
+            <div className="error-message">{errors.general}</div>
+          )}
         </div>
-      )}
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              placeholder="Enter your email"
+              className={errors.email ? "error" : ""}
+            />
+            {errors.email && <span className="error-text">{errors.email}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              placeholder="Enter your password"
+              className={errors.password ? "error" : ""}
+            />
+            {errors.password && (
+              <span className="error-text">{errors.password}</span>
+            )}
+          </div>
+
+          <div className="form-group checkbox-group">
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.rememberMe}
+                onChange={(e) =>
+                  setFormData({ ...formData, rememberMe: e.target.checked })
+                }
+              />
+              Remember me
+            </label>
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot password?
+            </Link>
+          </div>
+
+          <button type="submit" className="login-button" disabled={isLoading}>
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
+
+          <div className="register-prompt">
+            Don't have an account?{" "}
+            <Link to="/registration" className="register-link">
+              Sign up now
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

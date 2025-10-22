@@ -22,7 +22,7 @@ type SortOrder = "asc" | "desc";
 export default function Jobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
-  
+
   // Form fields
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
@@ -52,7 +52,7 @@ export default function Jobs() {
       const parsed = JSON.parse(storedJobs);
       setJobs(parsed);
     }
-    
+
     const storedDarkMode = localStorage.getItem("darkMode");
     if (storedDarkMode) setDarkMode(JSON.parse(storedDarkMode));
   }, []);
@@ -166,75 +166,7 @@ export default function Jobs() {
     setEditingJob(null);
   };
 
-  const handleExportJSON = () => {
-    const dataStr = JSON.stringify(jobs, null, 2);
-    const dataBlob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `job-applications-${new Date().toISOString().split("T")[0]}.json`;
-    link.click();
-  };
-
-  const handleExportCSV = () => {
-    const headers = [
-      "Title",
-      "Company",
-      "Location",
-      "Salary",
-      "Job URL",
-      "Contact Person",
-      "Contact Email",
-      "Date Applied",
-      "Status",
-      "Priority",
-      "Notes",
-    ];
-    const csvContent = [
-      headers.join(","),
-      ...jobs.map((job) =>
-        [
-          `"${job.title}"`,
-          `"${job.company}"`,
-          `"${job.location}"`,
-          `"${job.salary}"`,
-          `"${job.jobUrl}"`,
-          `"${job.contactPerson}"`,
-          `"${job.contactEmail}"`,
-          job.dateApplied,
-          job.status,
-          job.priority,
-          `"${job.notes.replace(/"/g, '""')}"`,
-        ].join(",")
-      ),
-    ].join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `job-applications-${new Date().toISOString().split("T")[0]}.csv`;
-    link.click();
-  };
-
-  const handleImportJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const imported = JSON.parse(event.target?.result as string);
-        if (Array.isArray(imported)) {
-          setJobs(imported);
-          alert("Jobs imported successfully!");
-        }
-      } catch (error) {
-        alert("Error importing file. Please check the format.");
-      }
-    };
-    reader.readAsText(file);
-  };
+  // Export and import functionality removed
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -262,7 +194,10 @@ export default function Jobs() {
     <div className="jobs-container">
       <div className="jobs-header">
         <h1>Job Application Tracker</h1>
-        <button className="dark-mode-toggle" onClick={() => setDarkMode(!darkMode)}>
+        <button
+          className="dark-mode-toggle"
+          onClick={() => setDarkMode(!darkMode)}
+        >
           {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
         </button>
       </div>
@@ -405,29 +340,18 @@ export default function Jobs() {
             <option value="Low">Low Priority</option>
           </select>
         </div>
-        <div className="export-buttons">
-          <button onClick={handleExportJSON} className="btn-secondary">
-            📥 Export JSON
-          </button>
-          <button onClick={handleExportCSV} className="btn-secondary">
-            📊 Export CSV
-          </button>
-          <label className="btn-secondary">
-            📤 Import JSON
-            <input
-              type="file"
-              accept=".json"
-              onChange={handleImportJSON}
-              style={{ display: "none" }}
-            />
-          </label>
-        </div>
+        {/* Export/Import buttons removed */}
       </div>
 
       {/* Jobs List */}
       {filteredJobs.length === 0 ? (
         <div className="empty-state">
-          <p>No jobs found. {searchTerm || filterStatus !== "All" || filterPriority !== "All" ? "Try adjusting your filters." : "Add your first application above!"}</p>
+          <p>
+            No jobs found.{" "}
+            {searchTerm || filterStatus !== "All" || filterPriority !== "All"
+              ? "Try adjusting your filters."
+              : "Add your first application above!"}
+          </p>
         </div>
       ) : (
         <div className="table-container">
@@ -435,20 +359,30 @@ export default function Jobs() {
             <thead>
               <tr>
                 <th onClick={() => handleSort("title")} className="sortable">
-                  Title {sortField === "title" && (sortOrder === "asc" ? "↑" : "↓")}
+                  Title{" "}
+                  {sortField === "title" && (sortOrder === "asc" ? "↑" : "↓")}
                 </th>
                 <th onClick={() => handleSort("company")} className="sortable">
-                  Company {sortField === "company" && (sortOrder === "asc" ? "↑" : "↓")}
+                  Company{" "}
+                  {sortField === "company" && (sortOrder === "asc" ? "↑" : "↓")}
                 </th>
                 <th>Location</th>
-                <th onClick={() => handleSort("dateApplied")} className="sortable">
-                  Date {sortField === "dateApplied" && (sortOrder === "asc" ? "↑" : "↓")}
+                <th
+                  onClick={() => handleSort("dateApplied")}
+                  className="sortable"
+                >
+                  Date{" "}
+                  {sortField === "dateApplied" &&
+                    (sortOrder === "asc" ? "↑" : "↓")}
                 </th>
                 <th onClick={() => handleSort("status")} className="sortable">
-                  Status {sortField === "status" && (sortOrder === "asc" ? "↑" : "↓")}
+                  Status{" "}
+                  {sortField === "status" && (sortOrder === "asc" ? "↑" : "↓")}
                 </th>
                 <th onClick={() => handleSort("priority")} className="sortable">
-                  Priority {sortField === "priority" && (sortOrder === "asc" ? "↑" : "↓")}
+                  Priority{" "}
+                  {sortField === "priority" &&
+                    (sortOrder === "asc" ? "↑" : "↓")}
                 </th>
                 <th>Actions</th>
               </tr>
@@ -461,12 +395,16 @@ export default function Jobs() {
                   <td>{job.location || "-"}</td>
                   <td>{job.dateApplied}</td>
                   <td>
-                    <span className={`status-badge status-${job.status.toLowerCase()}`}>
+                    <span
+                      className={`status-badge status-${job.status.toLowerCase()}`}
+                    >
                       {job.status}
                     </span>
                   </td>
                   <td>
-                    <span className={`priority-badge priority-${job.priority.toLowerCase()}`}>
+                    <span
+                      className={`priority-badge priority-${job.priority.toLowerCase()}`}
+                    >
                       {job.priority}
                     </span>
                   </td>
@@ -506,7 +444,9 @@ export default function Jobs() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>{viewingJob.title}</h2>
-              <button onClick={() => setViewingJob(null)} className="close-btn">×</button>
+              <button onClick={() => setViewingJob(null)} className="close-btn">
+                ×
+              </button>
             </div>
             <div className="modal-body">
               <div className="detail-row">
@@ -522,21 +462,29 @@ export default function Jobs() {
                 <strong>Date Applied:</strong> {viewingJob.dateApplied}
               </div>
               <div className="detail-row">
-                <strong>Status:</strong> 
-                <span className={`status-badge status-${viewingJob.status.toLowerCase()}`}>
+                <strong>Status:</strong>
+                <span
+                  className={`status-badge status-${viewingJob.status.toLowerCase()}`}
+                >
                   {viewingJob.status}
                 </span>
               </div>
               <div className="detail-row">
-                <strong>Priority:</strong> 
-                <span className={`priority-badge priority-${viewingJob.priority.toLowerCase()}`}>
+                <strong>Priority:</strong>
+                <span
+                  className={`priority-badge priority-${viewingJob.priority.toLowerCase()}`}
+                >
                   {viewingJob.priority}
                 </span>
               </div>
               {viewingJob.jobUrl && (
                 <div className="detail-row">
-                  <strong>Job URL:</strong> 
-                  <a href={viewingJob.jobUrl} target="_blank" rel="noopener noreferrer">
+                  <strong>Job URL:</strong>
+                  <a
+                    href={viewingJob.jobUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Open Posting
                   </a>
                 </div>
@@ -548,8 +496,10 @@ export default function Jobs() {
               )}
               {viewingJob.contactEmail && (
                 <div className="detail-row">
-                  <strong>Contact Email:</strong> 
-                  <a href={`mailto:${viewingJob.contactEmail}`}>{viewingJob.contactEmail}</a>
+                  <strong>Contact Email:</strong>
+                  <a href={`mailto:${viewingJob.contactEmail}`}>
+                    {viewingJob.contactEmail}
+                  </a>
                 </div>
               )}
               {viewingJob.notes && (
@@ -569,7 +519,9 @@ export default function Jobs() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Edit Application</h2>
-              <button onClick={() => setEditingJob(null)} className="close-btn">×</button>
+              <button onClick={() => setEditingJob(null)} className="close-btn">
+                ×
+              </button>
             </div>
             <form onSubmit={handleUpdateJob} className="modal-form">
               <input
@@ -618,7 +570,10 @@ export default function Jobs() {
                 type="text"
                 value={editingJob.contactPerson}
                 onChange={(e) =>
-                  setEditingJob({ ...editingJob, contactPerson: e.target.value })
+                  setEditingJob({
+                    ...editingJob,
+                    contactPerson: e.target.value,
+                  })
                 }
                 placeholder="Contact Person"
               />
