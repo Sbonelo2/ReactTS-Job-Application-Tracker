@@ -48,7 +48,7 @@ export default function Home() {
   return (
     <div className="home-container">
       <div className="hero-section">
-        <h1>Welcome to Your Job Application Tracker! 🎯</h1>
+        <h1>Welcome to Your Job Application Tracker! </h1>
         <p className="hero-subtitle">
           Stay organized and track your job search journey with ease
         </p>
@@ -56,7 +56,7 @@ export default function Home() {
 
       <div className="stats-overview">
         <div className="stat-box total">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon"></div>
           <div className="stat-content">
             <h3>{totalJobs}</h3>
             <p>Total Applications</p>
@@ -64,7 +64,7 @@ export default function Home() {
         </div>
         
         <div className="stat-box applied">
-          <div className="stat-icon">📝</div>
+          <div className="stat-icon"></div>
           <div className="stat-content">
             <h3>{applied}</h3>
             <p>Applied</p>
@@ -72,7 +72,7 @@ export default function Home() {
         </div>
         
         <div className="stat-box interview">
-          <div className="stat-icon">💼</div>
+          <div className="stat-icon"></div>
           <div className="stat-content">
             <h3>{interviews}</h3>
             <p>Interviews</p>
@@ -80,7 +80,7 @@ export default function Home() {
         </div>
         
         <div className="stat-box offered">
-          <div className="stat-icon">🎉</div>
+          <div className="stat-icon"></div>
           <div className="stat-content">
             <h3>{offers}</h3>
             <p>Offers</p>
@@ -88,7 +88,7 @@ export default function Home() {
         </div>
         
         <div className="stat-box rejected">
-          <div className="stat-icon">❌</div>
+          <div className="stat-icon"></div>
           <div className="stat-content">
             <h3>{rejected}</h3>
             <p>Rejected</p>
@@ -96,7 +96,7 @@ export default function Home() {
         </div>
         
         <div className="stat-box priority">
-          <div className="stat-icon">⭐</div>
+          <div className="stat-icon"></div>
           <div className="stat-content">
             <h3>{highPriority}</h3>
             <p>High Priority</p>
@@ -146,7 +146,7 @@ export default function Home() {
                 {job.location && <p className="job-location">📍 {job.location}</p>}
                 <p className="job-date">Applied: {job.dateApplied}</p>
                 {job.priority === "High" && (
-                  <span className="priority-indicator">⭐ High Priority</span>
+                  <span className="priority-indicator"> High Priority</span>
                 )}
               </div>
             ))}
@@ -158,7 +158,7 @@ export default function Home() {
         <h2>Quick Actions</h2>
         <div className="action-buttons">
           <Link to="/jobs" className="action-btn primary">
-            <span className="btn-icon">📋</span>
+            <span className="btn-icon"></span>
             <span className="btn-text">
               <strong>View All Jobs</strong>
               <small>Manage your applications</small>
@@ -166,7 +166,7 @@ export default function Home() {
           </Link>
           
           <Link to="/jobs" className="action-btn secondary">
-            <span className="btn-icon">➕</span>
+            <span className="btn-icon"></span>
             <span className="btn-text">
               <strong>Add New Application</strong>
               <small>Track a new opportunity</small>
@@ -174,7 +174,7 @@ export default function Home() {
           </Link>
           
           <Link to="/login" className="action-btn tertiary">
-            <span className="btn-icon">🔐</span>
+            <span className="btn-icon"></span>
             <span className="btn-text">
               <strong>Login</strong>
               <small>Access your account</small>
@@ -182,7 +182,7 @@ export default function Home() {
           </Link>
           
           <Link to="/registration" className="action-btn tertiary">
-            <span className="btn-icon">📝</span>
+            <span className="btn-icon"></span>
             <span className="btn-text">
               <strong>Register</strong>
               <small>Create new account</small>
@@ -193,7 +193,7 @@ export default function Home() {
 
       {totalJobs === 0 && (
         <div className="getting-started">
-          <h2>Getting Started 🚀</h2>
+          <h2>Getting Started </h2>
           <div className="steps">
             <div className="step">
               <div className="step-number">1</div>

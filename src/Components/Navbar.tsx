@@ -18,7 +18,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/Home" className="navbar-logo">
-          <span className="logo-icon">📋</span>
+          <span className="logo-icon">💻</span>
           <span className="logo-text">Job Tracker</span>
         </Link>
 
@@ -38,7 +38,7 @@ export default function Navbar() {
             className={`nav-link ${isActive('/Home') ? 'active' : ''}`}
             onClick={() => setIsMenuOpen(false)}
           >
-            <span className="nav-icon">🏠</span>
+            <span className="nav-icon"></span>
             Home
           </Link>
           
@@ -47,7 +47,7 @@ export default function Navbar() {
             className={`nav-link ${isActive('/jobs') ? 'active' : ''}`}
             onClick={() => setIsMenuOpen(false)}
           >
-            <span className="nav-icon">💼</span>
+            <span className="nav-icon"></span>
             Jobs
           </Link>
           
@@ -58,7 +58,7 @@ export default function Navbar() {
             className={`nav-link ${isActive('/login') ? 'active' : ''}`}
             onClick={() => setIsMenuOpen(false)}
           >
-            <span className="nav-icon">🔐</span>
+            <span className="nav-icon"></span>
             Login
           </Link>
           
@@ -67,7 +67,7 @@ export default function Navbar() {
             className={`nav-link nav-link-cta ${isActive('/registration') ? 'active' : ''}`}
             onClick={() => setIsMenuOpen(false)}
           >
-            <span className="nav-icon">✨</span>
+            <span className="nav-icon"></span>
             Sign Up
           </Link>
         </div>

@@ -314,7 +314,7 @@ export default function Jobs() {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="🔍 Search by title, company, or location..."
+            placeholder=" Search by title, company, or location..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -414,21 +414,21 @@ export default function Jobs() {
                       className="btn-view"
                       title="View Details"
                     >
-                      👁️
+                      
                     </button>
                     <button
                       onClick={() => handleEditJob(job)}
                       className="btn-edit"
                       title="Edit"
                     >
-                      ✏️
+                      
                     </button>
                     <button
                       onClick={() => handleDeleteJob(job.id)}
                       className="btn-delete"
                       title="Delete"
                     >
-                      🗑️
+                      
                     </button>
                   </td>
                 </tr>
