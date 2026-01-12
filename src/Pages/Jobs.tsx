@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useJobs } from "../hooks/useLocalStorage";
 import "./Jobs.css";
 
 interface Job {
@@ -20,7 +21,7 @@ type SortField = "title" | "company" | "dateApplied" | "status" | "priority";
 type SortOrder = "asc" | "desc";
 
 export default function Jobs() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const { jobs, addJob, updateJob, deleteJob } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
 
   // Form fields
@@ -45,22 +46,11 @@ export default function Jobs() {
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [darkMode, setDarkMode] = useState(false);
 
-  // Load jobs from localStorage
+  // Load dark mode preference
   useEffect(() => {
-    const storedJobs = localStorage.getItem("jobs");
-    if (storedJobs) {
-      const parsed = JSON.parse(storedJobs);
-      setJobs(parsed);
-    }
-
     const storedDarkMode = localStorage.getItem("darkMode");
     if (storedDarkMode) setDarkMode(JSON.parse(storedDarkMode));
   }, []);
-
-  // Save jobs to localStorage whenever jobs change
-  useEffect(() => {
-    localStorage.setItem("jobs", JSON.stringify(jobs));
-  }, [jobs]);
 
   // Save dark mode preference
   useEffect(() => {
@@ -116,8 +106,7 @@ export default function Jobs() {
     e.preventDefault();
     if (!title || !company) return;
 
-    const newJob: Job = {
-      id: Date.now(),
+    addJob({
       title,
       company,
       location,
@@ -129,9 +118,8 @@ export default function Jobs() {
       status,
       priority,
       notes,
-    };
+    });
 
-    setJobs([...jobs, newJob]);
     resetForm();
   };
 
@@ -150,7 +138,7 @@ export default function Jobs() {
 
   const handleDeleteJob = (id: number) => {
     if (window.confirm("Are you sure you want to delete this job?")) {
-      setJobs(jobs.filter((job) => job.id !== id));
+      deleteJob(id);
     }
   };
 
@@ -162,7 +150,7 @@ export default function Jobs() {
     e.preventDefault();
     if (!editingJob) return;
 
-    setJobs(jobs.map((job) => (job.id === editingJob.id ? editingJob : job)));
+    updateJob(editingJob.id, editingJob);
     setEditingJob(null);
   };
 

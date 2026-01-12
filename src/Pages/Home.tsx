@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useJobs } from "../hooks/useLocalStorage";
 import "./Home.css";
 
 interface Job {
@@ -18,22 +19,16 @@ interface Job {
 }
 
 export default function Home() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const { jobs } = useJobs();
   const [recentJobs, setRecentJobs] = useState<Job[]>([]);
 
   useEffect(() => {
-    const storedJobs = localStorage.getItem("jobs");
-    if (storedJobs) {
-      const parsed = JSON.parse(storedJobs);
-      setJobs(parsed);
-      
-      // Get 5 most recent jobs
-      const sorted = [...parsed].sort((a, b) => 
-        new Date(b.dateApplied).getTime() - new Date(a.dateApplied).getTime()
-      );
-      setRecentJobs(sorted.slice(0, 5));
-    }
-  }, []);
+    // Get 5 most recent jobs
+    const sorted = [...jobs].sort((a, b) => 
+      new Date(b.dateApplied).getTime() - new Date(a.dateApplied).getTime()
+    );
+    setRecentJobs(sorted.slice(0, 5));
+  }, [jobs]);
 
   const totalJobs = jobs.length;
   const applied = jobs.filter((job) => job.status === "Applied").length;
