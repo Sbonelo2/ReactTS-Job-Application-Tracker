@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "services": {
+    "web": {
+      "name": "reactts-job-application-tracker",
+      "type": "web",
+      "env": "static",
+      "buildCommand": "npm run build",
+      "publishPath": "dist",
+      "routes": [
+        {
+          "src": "/(.*)",
+          "dest": "/index.html"
+        }
+      ]
+    }
+  }
+}
