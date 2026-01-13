@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useJobs } from "../hooks/useLocalStorage";
 import "./Jobs.css";
 
