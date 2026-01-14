@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "React TypeScript Job Application Tracker - Deployed to Render",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
