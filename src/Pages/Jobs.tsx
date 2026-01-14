@@ -84,8 +84,8 @@ export default function Jobs() {
 
     // Sort
     result.sort((a, b) => {
-      let aVal: any = a[sortField];
-      let bVal: any = b[sortField];
+      let aVal: string | number | Date = a[sortField];
+      let bVal: string | number | Date = b[sortField];
 
       if (sortField === "dateApplied") {
         aVal = new Date(aVal).getTime();

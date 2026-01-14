@@ -65,7 +65,7 @@ export default function Login() {
     try {
       // Get users from localStorage
       const users = JSON.parse(localStorage.getItem("users") || "[]");
-      const user = users.find((u: any) => u.email === formData.email);
+      const user = users.find((u: { email: string; password: string }) => u.email === formData.email);
 
       if (!user || user.password !== formData.password) {
         throw new Error("Invalid email or password");

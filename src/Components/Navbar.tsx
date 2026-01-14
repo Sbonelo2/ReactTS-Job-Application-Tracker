@@ -4,7 +4,7 @@ import './Navbar.css';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<{ email: string; name: string } | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 

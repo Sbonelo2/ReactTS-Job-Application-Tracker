@@ -66,7 +66,7 @@ export default function Registration() {
     try {
       // Check if user already exists
       const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
-      if (existingUsers.some((user: any) => user.email === formData.email)) {
+      if (existingUsers.some((user: { email: string }) => user.email === formData.email)) {
         throw new Error("A user with this email already exists");
       }
 
